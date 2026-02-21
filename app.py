@@ -40,8 +40,8 @@ def chat():
         
         if updated_data.is_complete():
             pdf_buffer = pdf_gen.generate(updated_data)
-            pdf_path = f"static/resumes/{user_id}_resume.pdf"
-            os.makedirs('static/resumes', exist_ok=True)
+            pdf_dir = '/tmp'
+            pdf_path = f"{pdf_dir}/{user_id}_resume.pdf"
             with open(pdf_path, 'wb') as f:
                 f.write(pdf_buffer.read())
             
@@ -61,7 +61,7 @@ def chat():
 
 @app.route('/download/<user_id>')
 def download_pdf(user_id):
-    pdf_path = f"static/resumes/{user_id}_resume.pdf"
+    pdf_path = f"/tmp/{user_id}_resume.pdf"
     if os.path.exists(pdf_path):
         return send_file(pdf_path, as_attachment=True, download_name='resume.pdf')
     return jsonify({'error': 'PDF not found'}), 404
